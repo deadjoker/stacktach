@@ -313,13 +313,12 @@ def do_request(request):
     filters = {'request_id': request_id}
     _add_when_filters(request, filters)
     events = model_search(request, model, filters, order_by='when')
-    results = [["#", "?", "When", "Deployment", "Event", "Host",
-                "State", "State'", "Task'"]]
+    results = [["#", "Instance", "When", "Event", "Host",
+                "Publisher"]]
     for e in events:
         when = dt.dt_from_decimal(e.when)
-        results.append([e.id, routing_key_type(e.routing_key), str(when),
-                        e.deployment.name, e.event, e.host, e.state,
-                        e.old_state, e.old_task])
+        results.append([e.id, e.instance, str(when), 
+			e.event, e.host, e.publisher])
     return rsp(json.dumps(results))
 
 

@@ -80,8 +80,8 @@ class GenericRawData(models.Model):
 
 
 class RawData(models.Model):
-    result_titles = [["#", "?", "When", "Deployment", "Event", "Host",
-                          "State", "State'", "Task'"]]
+    result_titles = [["#", "Instance", "When", "Event", "Host",
+                          "Publisher"]]
     deployment = models.ForeignKey(Deployment)
     tenant = models.CharField(max_length=50, null=True, blank=True,
                               db_index=True)
@@ -126,9 +126,8 @@ class RawData(models.Model):
     def search_results(self, results, when, routing_key_status):
         if not results:
             results = copy.deepcopy(self.result_titles)
-        results.append([self.id, routing_key_status, str(when),
-                        self.deployment.name, self.event, self.host, self.state,
-                        self.old_state, self.old_task])
+        results.append([self.id, self.instance, str(when),
+                        self.event, self.host, self.publisher])
         return results
 
 
